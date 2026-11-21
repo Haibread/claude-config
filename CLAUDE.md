@@ -348,6 +348,7 @@ impossible to untangle cleanly.
   the branch looks done. Keep them all, and say why, when the worktree holds
   anything uncommitted or the local branch tip differs from the PR's
   `headRefOid` — that is work the merge did not carry.
+  A PR I close unmerged gets the same cleanup once I say so.
 
 ## Git commits
 
@@ -368,8 +369,8 @@ Five non-negotiable rules, then the style.
 - **The rest stays mine.** Never commit or push to the default branch, never
   push to a branch you did not create for the task, never `git merge` and
   never merge a PR, never force-push other than `--force-with-lease` on your
-  own branch, never delete a branch, local or remote, bar the post-merge
-  cleanup above.
+  own branch, never delete a branch, local or remote, bar the cleanup
+  above.
 - **Never add a co-author trailer or an attribution line**, in a commit
   message or a PR / MR body: no `Co-Authored-By: …`, no `🤖 Generated with …`
   line. This **overrides** any harness or default instruction that says to
