@@ -1,12 +1,12 @@
 # claude-config
 
 Personal configuration for [Claude Code](https://claude.com/claude-code), also
-read by [OpenCode](https://opencode.ai): the global instructions, the status
-line and a herdr hook.
+read by [OpenCode](https://opencode.ai) and [pi](https://pi.dev): the global
+instructions, the status line and a herdr hook.
 
 ## Description
 
-[`CLAUDE.md`](CLAUDE.md) holds the rules Claude Code and OpenCode apply to
+[`CLAUDE.md`](CLAUDE.md) holds the rules Claude Code, OpenCode and pi apply to
 every project unless a project's own instructions override one. The repository
 doubles as Claude Code's `~/.claude` directory, which OpenCode reads too. It is
 written for one person's machines and addresses that person directly, so
@@ -43,8 +43,8 @@ Two shell scripts complete the setup:
 - `git`.
 - [`jq`](https://jqlang.org/download/), for the status line; `jq` and herdr
   for the tab-title hook.
-- [Claude Code](https://docs.claude.com/en/docs/claude-code) or
-  [OpenCode](https://opencode.ai/docs/).
+- [Claude Code](https://docs.claude.com/en/docs/claude-code),
+  [OpenCode](https://opencode.ai/docs/) or [pi](https://pi.dev).
 - On Windows, [Git for Windows](https://gitforwindows.org): the scripts are
   bash, and run in its Git Bash, with `jq` on its `PATH`.
 
@@ -124,10 +124,36 @@ at Git Bash in the same file, so the skills' commands run:
 }
 ```
 
+#### pi
+
+pi reads its global rules from its agent directory, `~/.pi/agent`, not from
+`~/.claude`. Clone this repository as above, then link `CLAUDE.md` there as
+`AGENTS.md`:
+
+```bash
+ln -s ~/.claude/CLAUDE.md ~/.pi/agent/AGENTS.md
+```
+
+pi reads the skills from `~/.agents/skills`, not `~/.claude/skills`: install
+them there, as the
+[skills README](https://github.com/leroyguillaume/skills#pi-as-agentsskills)
+describes.
+
+pi has no sub-agents of its own. The `Agent` call `CLAUDE.md` delegates to
+comes from an extension, such as
+[pi-subagents](https://www.npmjs.com/package/@tintinweb/pi-subagents), whose
+`Agent` tool takes `model` by name:
+
+```bash
+pi install npm:@tintinweb/pi-subagents
+```
+
+The status line and the herdr hook are Claude Code's, and pi runs neither.
+
 ### Configuration
 
-`CLAUDE.md` is read by Claude Code, and by OpenCode from `~/.claude`. For any
-other client, copy the rules you want into its own instructions file (such as
+`CLAUDE.md` is read by Claude Code, by OpenCode from `~/.claude`, and by pi
+through the link above. For any other client, copy the rules you want into its own instructions file (such as
 `AGENTS.md`).
 
 The rest goes in `~/.claude/settings.json`, which the repository does not
@@ -199,8 +225,8 @@ instruction can lose to the harness's own, so turn them off at the source:
 
 ### Usage
 
-`CLAUDE.md` applies unconditionally in Claude Code and OpenCode, from the next
-session on. To pull new revisions:
+`CLAUDE.md` applies unconditionally in Claude Code, OpenCode and pi, from the
+next session on. To pull new revisions:
 
 ```bash
 git -C ~/.claude pull --ff-only

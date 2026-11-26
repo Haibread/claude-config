@@ -1,10 +1,12 @@
 # CLAUDE.md
 
-Global, non-negotiable rules for Claude Code. These apply to **every** project
-unless a project-level `CLAUDE.md` explicitly overrides a specific rule.
+Global, non-negotiable rules for Claude Code, also read by OpenCode and pi.
+These apply to **every** project unless a project-level `CLAUDE.md` or
+`AGENTS.md` explicitly overrides a specific rule.
 
-Most concrete conventions live in skills under `~/.claude/skills/`, which load
-on demand from file paths and topics. The rules kept in this file are the ones
+Most concrete conventions live in skills under `~/.claude/skills/`
+(`~/.agents/skills/` for pi), which load on demand from file paths and
+topics. The rules kept in this file are the ones
 that must apply unconditionally — meta-principles and negative guardrails that
 would be dangerous to miss if a skill failed to load.
 
@@ -304,11 +306,12 @@ not a proposal.
 
 ## Conventions (load on demand)
 
-Detailed rules live in skills under `~/.claude/skills/`, which are listed with
-their own trigger conditions at the start of every session — no copy of that
-list belongs here, it only goes stale. They auto-trigger from file paths and
-topics, but if you are about to touch a file one of them covers and the skill
-hasn't loaded, invoke it explicitly before writing code.
+Detailed rules live in skills under `~/.claude/skills/` (`~/.agents/skills/`
+for pi), which are listed with their own trigger conditions at the start of
+every session — no copy of that list belongs here, it only goes stale. They
+auto-trigger from file paths and topics, but if you are about to touch a file
+one of them covers and the skill hasn't loaded, invoke it explicitly before
+writing code.
 
 ## Work in a worktree, on its own branch
 
@@ -499,8 +502,8 @@ the tests"):
 Delegating a topic means a visible session of its own when this session
 runs inside herdr, which I steer directly: `herdr-delegation` says how.
 Outside herdr, or in a session another one started, it is an `Agent` call
-— under OpenCode, which reads this file too, a `task` call: wherever these
-rules say `Agent`.
+— under OpenCode, which reads this file too, a `task` call; under pi, the
+`Agent` tool of its sub-agent extension: wherever these rules say `Agent`.
 
 - **A trivial topic** — a lookup, a single edit, nothing to investigate — is
   done inline or by an `Agent` call, never in a session of its own.
@@ -542,7 +545,9 @@ one line of the message that launches it ("Sonnet: well-scoped search").
 A custom agent whose frontmatter already sets `model` keeps it unless the
 task clearly calls for the other one — then override it and say why.
 OpenCode's `task` takes no `model`: the choice is the `subagent_type`, the
-`sonnet` or `opus` sub-agent, and say so when neither is configured.
+`sonnet` or `opus` sub-agent, and say so when neither is configured. pi's
+`Agent` takes `model` by name, `sonnet` or `opus`; a pi with no sub-agent
+extension has no `Agent` at all, and says so instead of launching one.
 
 ## Interaction defaults
 
